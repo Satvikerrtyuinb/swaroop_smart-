@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, use } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -16,11 +16,12 @@ interface CategoryPageProps {
 }
 
 export default function CategoryInsightsPage({ params }: CategoryPageProps) {
+  const { category } = use(params)
   const router = useRouter()
   const { toast } = useToast()
   const [timeRange, setTimeRange] = useState("3months")
 
-  const categoryName = params.category.charAt(0).toUpperCase() + params.category.slice(1)
+  const categoryName = category.charAt(0).toUpperCase() + category.slice(1)
 
   // Mock detailed data for the category
   const categoryData = {
@@ -148,7 +149,7 @@ export default function CategoryInsightsPage({ params }: CategoryPageProps) {
     },
   }
 
-  const currentData = categoryData[params.category as keyof typeof categoryData] || categoryData.electronics
+  const currentData = categoryData[category as keyof typeof categoryData] || categoryData.electronics
 
   const downloadCategoryReport = () => {
     const csvContent = [
