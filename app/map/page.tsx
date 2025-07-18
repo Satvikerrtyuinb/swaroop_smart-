@@ -19,6 +19,8 @@ import {
   AlertTriangle,
   Calendar,
   Activity,
+  Building2,
+  Zap,
 } from "lucide-react"
 
 interface ProcessingHub {
@@ -307,12 +309,30 @@ export default function HubNetworkPage() {
           <p className="text-muted-foreground">Manage and monitor processing hubs across India</p>
         </div>
 
-        {/* View Tabs */}
+        {/* Enhanced View Tabs */}
         <Tabs value={mapView} onValueChange={(v) => setMapView(v as typeof mapView)}>
-          <TabsList>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="performance">Performance</TabsTrigger>
-            <TabsTrigger value="logistics">Logistics</TabsTrigger>
+          <TabsList className="bg-gradient-to-r from-blue-50 to-green-50 p-1 rounded-xl">
+            <TabsTrigger 
+              value="overview" 
+              className="data-[state=active]:bg-white data-[state=active]:shadow-md data-[state=active]:text-blue-600 transition-all duration-200 rounded-lg font-medium px-6"
+            >
+              <Building2 className="h-4 w-4 mr-2" />
+              Overview
+            </TabsTrigger>
+            <TabsTrigger 
+              value="performance" 
+              className="data-[state=active]:bg-white data-[state=active]:shadow-md data-[state=active]:text-green-600 transition-all duration-200 rounded-lg font-medium px-6"
+            >
+              <Zap className="h-4 w-4 mr-2" />
+              Performance
+            </TabsTrigger>
+            <TabsTrigger 
+              value="logistics" 
+              className="data-[state=active]:bg-white data-[state=active]:shadow-md data-[state=active]:text-purple-600 transition-all duration-200 rounded-lg font-medium px-6"
+            >
+              <TrendingUp className="h-4 w-4 mr-2" />
+              Logistics
+            </TabsTrigger>
           </TabsList>
         </Tabs>
 
@@ -392,8 +412,8 @@ export default function HubNetworkPage() {
               <Card
                 key={hub.id}
                 onClick={() => handleSelect(hub)}
-                className={`cursor-pointer transition-all hover:shadow-lg ${
-                  selectedHub?.id === hub.id ? "ring-2 ring-primary" : ""
+                className={`cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${
+                  selectedHub?.id === hub.id ? "ring-2 ring-blue-500 shadow-xl" : "hover:shadow-lg"
                 }`}
               >
                 <CardHeader className="relative p-0">
@@ -411,7 +431,7 @@ export default function HubNetworkPage() {
                     {hub.city}, {hub.state}
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-3 p-4">
+                <CardContent className="space-y-3 p-6">
                   <div>
                     <CardTitle className="text-lg">{hub.name}</CardTitle>
                     <p className="text-sm text-muted-foreground">Last updated: {getTimeAgo(hub.lastUpdated)}</p>
@@ -423,7 +443,7 @@ export default function HubNetworkPage() {
                         <span>Utilization</span>
                         <span className="font-medium">{hub.utilization}%</span>
                       </div>
-                      <Progress value={hub.utilization} className="h-2" />
+                      <Progress value={hub.utilization} className="h-3" />
                       <div className="flex justify-between text-sm">
                         <span>Workers</span>
                         <span>
@@ -439,7 +459,7 @@ export default function HubNetworkPage() {
                         <span>Efficiency</span>
                         <span className="font-medium">{hub.efficiency}%</span>
                       </div>
-                      <Progress value={hub.efficiency} className="h-2" />
+                      <Progress value={hub.efficiency} className="h-3" />
                       <div className="flex justify-between text-sm">
                         <span>Avg. Processing</span>
                         <span>{hub.avgProcessingTime}h</span>
@@ -464,14 +484,14 @@ export default function HubNetworkPage() {
                     </div>
                   )}
 
-                  <div className="flex flex-wrap gap-1">
+                  <div className="flex flex-wrap gap-2 pt-2">
                     {hub.specialization.slice(0, 2).map((spec) => (
-                      <Badge key={spec} variant="secondary" className="text-xs">
+                      <Badge key={spec} variant="secondary" className="text-xs bg-blue-50 text-blue-700 hover:bg-blue-100">
                         {spec}
                       </Badge>
                     ))}
                     {hub.specialization.length > 2 && (
-                      <Badge variant="secondary" className="text-xs">
+                      <Badge variant="secondary" className="text-xs bg-gray-100 text-gray-600">
                         +{hub.specialization.length - 2}
                       </Badge>
                     )}
