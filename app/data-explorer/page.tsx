@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/pagination"
 import { comprehensiveReturnsData } from "@/data/comprehensive-returns-dataset"
 import { Search, Filter, ArrowUp, ArrowDown, Download, RefreshCw, Package, ListFilter, BarChart3, Database, Eye } from "lucide-react"
+import { TrendingUp } from "lucide-react"
 import Image from "next/image"
 
 const ITEMS_PER_PAGE = 10
@@ -125,7 +126,12 @@ export default function DataExplorerPage() {
       <Card className="border-0 shadow-xl bg-gradient-to-r from-blue-50 via-green-50 to-blue-50 overflow-hidden">
         <CardContent className="p-0">
           <div className="relative h-48 md:h-64">
-            <Image src="/images/data-analytics.png" alt="Data Explorer" fill className="object-cover" />
+            <Image 
+              src="https://images.pexels.com/photos/590022/pexels-photo-590022.jpeg" 
+              alt="Data Analytics Dashboard" 
+              fill 
+              className="object-cover" 
+            />
             <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 to-green-900/80 flex items-center">
               <div className="p-8 text-white">
                 <h2 className="text-3xl font-bold mb-2">Comprehensive Data Explorer</h2>
@@ -366,13 +372,13 @@ export default function DataExplorerPage() {
                               <TableCell className="text-purple-600 font-semibold">{item.co2Saved} kg</TableCell>
                               <TableCell>
                                 <Badge 
-                                  variant="secondary" 
+                                        ? "https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg"
                                   className={
-                                    item.recommendedAction === "Resale" 
-                                      ? "bg-green-100 text-green-800" 
+                                          ? "https://images.pexels.com/photos/1201996/pexels-photo-1201996.jpeg"
+                                          : "https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg"
                                       : item.recommendedAction === "Repair"
-                                        ? "bg-orange-100 text-orange-800"
-                                        : "bg-red-100 text-red-800"
+                                        ? "https://images.pexels.com/photos/996329/pexels-photo-996329.jpeg"
+                                        : "https://images.pexels.com/photos/1599791/pexels-photo-1599791.jpeg"
                                   }
                                 >
                                   {item.recommendedAction}
