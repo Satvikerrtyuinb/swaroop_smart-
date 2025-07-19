@@ -40,6 +40,7 @@ import {
   CheckCircle,
 } from "lucide-react"
 import Image from "next/image"
+import { ExecutiveAIAssistant } from "@/components/executive-ai-assistant"
 
 // Mock advanced analytics data
 const predictiveData = [
@@ -446,6 +447,11 @@ export default function AdvancedAnalyticsPage() {
               </Card>
             </TabsContent>
           </Tabs>
+
+          {/* Executive AI Assistant */}
+          <div className="mt-8">
+            <ExecutiveAIAssistant />
+          </div>
 
           <div className="flex justify-center mt-8">
             <Button onClick={generateAdvancedReport} disabled={isGenerating} size="lg" className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700">
