@@ -372,13 +372,19 @@ export default function DataExplorerPage() {
                               <TableCell className="text-purple-600 font-semibold">{item.co2Saved} kg</TableCell>
                               <TableCell>
                                 <Badge 
-                                        ? "https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg"
-                                  className={
-                                          ? "https://images.pexels.com/photos/1201996/pexels-photo-1201996.jpeg"
-                                          : "https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg"
+                                  variant={
+                                    item.recommendedAction === "Resale"
+                                      ? "default"
                                       : item.recommendedAction === "Repair"
-                                        ? "https://images.pexels.com/photos/996329/pexels-photo-996329.jpeg"
-                                        : "https://images.pexels.com/photos/1599791/pexels-photo-1599791.jpeg"
+                                        ? "secondary"
+                                        : "outline"
+                                  }
+                                  className={
+                                    item.recommendedAction === "Resale"
+                                      ? "bg-green-50 text-green-700 border-green-200"
+                                      : item.recommendedAction === "Repair"
+                                        ? "bg-blue-50 text-blue-700 border-blue-200"
+                                        : "bg-orange-50 text-orange-700 border-orange-200"
                                   }
                                 >
                                   {item.recommendedAction}
