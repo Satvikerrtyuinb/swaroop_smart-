@@ -127,7 +127,7 @@ export default function DataExplorerPage() {
         <CardContent className="p-0">
           <div className="relative h-48 md:h-64">
             <Image 
-              src="https://images.pexels.com/photos/590022/pexels-photo-590022.jpeg" 
+              src="/placeholder.svg" 
               alt="Data Analytics Dashboard" 
               fill 
               className="object-cover" 
