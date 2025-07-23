@@ -1,0 +1,281 @@
+# SmartReturns ML Model Configuration
+# ===================================
+
+# Model Training Configuration
+training:
+  # Data splitting
+  test_size: 0.2
+  validation_size: 0.2
+  random_state: 42
+  stratify: true
+  
+  # Cross-validation
+  cv_folds: 5
+  cv_scoring: ['accuracy', 'f1_weighted', 'precision_weighted', 'recall_weighted']
+  
+  # Feature selection
+  feature_selection:
+    enabled: true
+    method: 'recursive_feature_elimination'
+    n_features: 20
+    
+  # Hyperparameter tuning
+  hyperparameter_tuning:
+    enabled: true
+    method: 'optuna'  # or 'grid_search', 'random_search'
+    n_trials: 100
+    timeout: 3600  # seconds
+
+# Model Configurations
+models:
+  disposition_classifier:
+    algorithm: 'random_forest'
+    parameters:
+      n_estimators: 100
+      max_depth: 10
+      min_samples_split: 5
+      min_samples_leaf: 2
+      class_weight: 'balanced'
+      random_state: 42
+    
+    hyperparameter_space:
+      n_estimators: [50, 100, 200, 300]
+      max_depth: [5, 10, 15, 20, null]
+      min_samples_split: [2, 5, 10]
+      min_samples_leaf: [1, 2, 4]
+    
+    evaluation_metrics:
+      - accuracy
+      - precision_weighted
+      - recall_weighted
+      - f1_weighted
+      - roc_auc_ovr_weighted
+
+  value_regressor:
+    algorithm: 'gradient_boosting'
+    parameters:
+      n_estimators: 100
+      learning_rate: 0.1
+      max_depth: 6
+      min_samples_split: 5
+      min_samples_leaf: 2
+      subsample: 0.8
+      random_state: 42
+    
+    hyperparameter_space:
+      n_estimators: [50, 100, 200]
+      learning_rate: [0.05, 0.1, 0.2]
+      max_depth: [3, 6, 9]
+      subsample: [0.7, 0.8, 0.9]
+    
+    evaluation_metrics:
+      - mean_absolute_error
+      - mean_squared_error
+      - r2_score
+      - mean_absolute_percentage_error
+
+  demand_forecaster:
+    algorithm: 'prophet'
+    parameters:
+      seasonality_mode: 'multiplicative'
+      yearly_seasonality: true
+      weekly_seasonality: true
+      daily_seasonality: false
+      changepoint_prior_scale: 0.05
+      seasonality_prior_scale: 10.0
+    
+    evaluation_metrics:
+      - mean_absolute_error
+      - mean_absolute_percentage_error
+      - symmetric_mean_absolute_percentage_error
+
+# Feature Engineering Configuration
+feature_engineering:
+  # Categorical encoding
+  categorical_encoding:
+    method: 'target_encoding'  # or 'one_hot', 'label_encoding'
+    handle_unknown: 'ignore'
+    
+  # Numerical scaling
+  numerical_scaling:
+    method: 'standard_scaler'  # or 'min_max_scaler', 'robust_scaler'
+    
+  # Feature creation
+  polynomial_features:
+    enabled: false
+    degree: 2
+    interaction_only: true
+    
+  # Text processing
+  text_processing:
+    vectorizer: 'tfidf'  # or 'count', 'word2vec'
+    max_features: 1000
+    ngram_range: [1, 2]
+    stop_words: 'english'
+
+# Data Pipeline Configuration
+data_pipeline:
+  # Data sources
+  sources:
+    primary_db:
+      type: 'postgresql'
+      host: '${DB_HOST}'
+      port: 5432
+      database: '${DB_NAME}'
+      username: '${DB_USER}'
+      password: '${DB_PASSWORD}'
+      
+    backup_db:
+      type: 'sqlite'
+      path: 'data/backup.db'
+      
+    external_api:
+      type: 'rest_api'
+      base_url: '${API_BASE_URL}'
+      auth_token: '${API_TOKEN}'
+  
+  # Data validation
+  validation:
+    schema_validation: true
+    data_quality_checks: true
+    outlier_detection: true
+    duplicate_removal: true
+    
+  # Data preprocessing
+  preprocessing:
+    missing_value_strategy:
+      numerical: 'median'
+      categorical: 'mode'
+      text: 'empty_string'
+    
+    outlier_handling:
+      method: 'iqr'  # or 'zscore', 'isolation_forest'
+      threshold: 1.5
+      
+    feature_scaling: true
+    feature_selection: true
+
+# Model Deployment Configuration
+deployment:
+  # Model serving
+  serving:
+    framework: 'fastapi'
+    host: '0.0.0.0'
+    port: 8000
+    workers: 4
+    
+  # Model versioning
+  versioning:
+    enabled: true
+    registry: 'mlflow'  # or 'wandb', 'local'
+    auto_versioning: true
+    
+  # A/B testing
+  ab_testing:
+    enabled: true
+    traffic_split: 0.1  # 10% to experimental model
+    
+  # Monitoring
+  monitoring:
+    data_drift_detection: true
+    model_performance_tracking: true
+    prediction_logging: true
+    alert_thresholds:
+      accuracy_drop: 0.05
+      prediction_latency: 1000  # milliseconds
+      error_rate: 0.01
+
+# Evaluation Configuration
+evaluation:
+  # Model comparison
+  baseline_models:
+    - 'dummy_classifier'
+    - 'logistic_regression'
+    - 'decision_tree'
+    
+  # Performance thresholds
+  performance_thresholds:
+    disposition_classifier:
+      accuracy: 0.80
+      f1_weighted: 0.75
+      precision_weighted: 0.75
+      recall_weighted: 0.75
+      
+    value_regressor:
+      r2_score: 0.70
+      mean_absolute_percentage_error: 0.20
+      
+  # Business metrics
+  business_metrics:
+    value_recovery_improvement: 0.10  # 10% improvement target
+    processing_time_reduction: 0.15   # 15% reduction target
+    co2_savings_increase: 0.20        # 20% increase target
+
+# Logging and Monitoring
+logging:
+  level: 'INFO'
+  format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+  
+  # Log destinations
+  handlers:
+    - type: 'file'
+      filename: 'logs/ml_pipeline.log'
+      max_bytes: 10485760  # 10MB
+      backup_count: 5
+      
+    - type: 'console'
+      
+  # Metrics logging
+  metrics:
+    enabled: true
+    backend: 'prometheus'  # or 'statsd', 'cloudwatch'
+    
+# Security Configuration
+security:
+  # API authentication
+  api_auth:
+    enabled: true
+    method: 'jwt'  # or 'api_key', 'oauth'
+    
+  # Data encryption
+  encryption:
+    at_rest: true
+    in_transit: true
+    
+  # Access control
+  access_control:
+    role_based: true
+    audit_logging: true
+
+# Environment-specific overrides
+environments:
+  development:
+    training:
+      test_size: 0.3
+    deployment:
+      serving:
+        workers: 1
+    logging:
+      level: 'DEBUG'
+      
+  staging:
+    deployment:
+      ab_testing:
+        enabled: false
+    monitoring:
+      alert_thresholds:
+        accuracy_drop: 0.10
+        
+  production:
+    training:
+      hyperparameter_tuning:
+        n_trials: 200
+        timeout: 7200
+    deployment:
+      serving:
+        workers: 8
+    monitoring:
+      alert_thresholds:
+        accuracy_drop: 0.03
+        prediction_latency: 500
+        error_rate: 0.005
